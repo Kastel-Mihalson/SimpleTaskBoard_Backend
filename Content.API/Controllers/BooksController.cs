@@ -1,5 +1,4 @@
 ﻿using Content.API.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Content.API.Controllers
@@ -15,7 +14,6 @@ namespace Content.API.Controllers
             _bookStore = bookStore;
         }
 
-        [Authorize]
         [HttpGet]
         [Route("getAvailableBooks")]
         public IActionResult GetAvailableBooks()

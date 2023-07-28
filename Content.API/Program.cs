@@ -49,7 +49,7 @@ public class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
-
+        app.MapGet("/hello", () => "Content.API");
         app.UseEndpoints(endpoints =>
         { 
             endpoints.MapControllers();

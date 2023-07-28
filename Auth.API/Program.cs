@@ -1,5 +1,4 @@
 using Auth.Common;
-using Microsoft.AspNetCore.Authentication.OAuth;
 
 public class Program
 {
@@ -23,6 +22,7 @@ public class Program
 
         app.UseRouting();
         app.UseCors();
+        app.MapGet("/hello", () => "Auth.API");
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();

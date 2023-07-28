@@ -34,6 +34,13 @@ namespace Auth.API.Controllers
                 Name = "admin",
                 Email = "admin@email.ru",
                 Password = "admin"
+            },
+            new User
+            {
+                Id = Guid.Parse("4E0B3ECE-A245-40E3-A219-79FB54EDD541"),
+                Name = "test",
+                Email = "test@email.ru",
+                Password = "test"
             }
         };
 

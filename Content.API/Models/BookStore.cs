@@ -5,7 +5,8 @@
         public List<Book> Books = new List<Book>
         {
             new Book { Id = 1, Title = "Some one", Author = "Who Som", Price = 1047 },
-            new Book { Id = 2, Title = "Some Other", Author = "Man Chee", Price = 847 }
+            new Book { Id = 2, Title = "Some Other", Author = "Man Chee", Price = 847 },
+            new Book { Id = 3, Title = "Gon Bon", Author = "Bon Gon", Price = 747 }
         };
 
         public Dictionary<Guid, int[]> Orders = new Dictionary<Guid, int[]>
