@@ -1,4 +1,5 @@
 ﻿using Auth.API.Models;
+using Auth.API.Repositories;
 using Auth.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -13,10 +14,12 @@ namespace Auth.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IOptions<AuthOptions> _authOptions;
+        private readonly IRepository<User> _userRepository;
 
-        public AuthController(IOptions<AuthOptions> authOptions)
+        public AuthController(IOptions<AuthOptions> authOptions, IRepository<User> userRepository)
         {
             _authOptions = authOptions;
+            _userRepository = userRepository;
         }
 
         public IReadOnlyList<User> Users => new List<User>
@@ -58,6 +61,37 @@ namespace Auth.API.Controllers
                 });
             }
             return Unauthorized();
+        }
+
+        [Route("get-user-by-email/{id}")]
+        [HttpGet]
+        public IActionResult GetUserByEmail(Guid id)
+        {
+            var user = _userRepository.GetById(id);
+
+            if (user == null)
+            {
+                return NotFound($"User by id: {id} not found");
+            }
+
+            return Ok(user);
+        }
+
+        [Route("create-user")]
+        [HttpPost]
+        public IActionResult CreateUser([FromBody] User user)
+        {
+            var userId = Guid.NewGuid();
+
+            _userRepository.Create(new User
+            {
+                Id = userId,
+                Email = user.Email,
+                Name = user.Name,
+                Password = user.Password
+            });
+
+            return Ok($"User succesfully created. Id: {userId}");
         }
 
         private User? AuthentificateUser(string email, string password)

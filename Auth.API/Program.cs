@@ -1,4 +1,8 @@
+using Auth.API;
+using Auth.API.Models;
+using Auth.API.Repositories;
 using Auth.Common;
+using Microsoft.EntityFrameworkCore;
 
 public class Program
 {
@@ -6,6 +10,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var authSection = builder.Configuration.GetSection("Auth");
+        var connectionString = builder.Configuration.GetConnectionString("DBConnection");
 
         builder.Services.AddControllers();
         builder.Services.Configure<AuthOptions>(authSection);
@@ -18,6 +23,10 @@ public class Program
                     .AllowAnyHeader();
             });
         });
+        builder.Services.AddDbContext<AuthContext>(options 
+            => options.UseNpgsql(connectionString));
+        builder.Services.AddTransient<IRepository<User>, UserRepository>();
+
         var app = builder.Build();
 
         app.UseRouting();
