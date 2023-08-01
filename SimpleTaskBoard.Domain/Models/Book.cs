@@ -1,4 +1,4 @@
-﻿namespace Content.API.Models
+﻿namespace SimpleTaskBoard.Domain.Models
 {
     public class Book
     {

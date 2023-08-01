@@ -3,6 +3,8 @@ using Auth.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SimpleTaskBoard.Domain.Models;
+using SimpleTaskBoard.Infrastructure.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -13,10 +15,12 @@ namespace Auth.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IOptions<AuthOptions> _authOptions;
+        private readonly IRepositoryWrapper _repository;
 
-        public AuthController(IOptions<AuthOptions> authOptions)
+        public AuthController(IOptions<AuthOptions> authOptions, IRepositoryWrapper repository)
         {
             _authOptions = authOptions;
+            _repository = repository;
         }
 
         public IReadOnlyList<User> Users => new List<User>
@@ -44,11 +48,11 @@ namespace Auth.API.Controllers
             }
         };
 
-        [Route("login")]
-        [HttpPost]
-        public IActionResult Login([FromBody] Login login)
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] Login login)
         {
-            var user = AuthentificateUser(login.Email, login.Password);
+            var user = await AuthentificateUser(login.Email, login.Password);
+
             if (user != null)
             {
                 var token = GenerateJWT(user);
@@ -60,9 +64,51 @@ namespace Auth.API.Controllers
             return Unauthorized();
         }
 
-        private User? AuthentificateUser(string email, string password)
+        [HttpGet("get-all-users")]
+        public async Task<IActionResult> GetAllUsers()
         {
-            return Users.FirstOrDefault(u => u.Email == email && u.Password == password);
+            var users = await _repository.User.GetAllUsers();
+
+            return Ok(users);
+        }
+
+        [HttpGet("get-user-by-email/{email}")]
+        public async Task<IActionResult> GetUserByEmail(string email)
+        {
+            var user = await _repository.User.GetUserByEmail(email);
+
+            if (user == null)
+            {
+                return NotFound($"User by email: {email} not found");
+            }
+
+            return Ok(user);
+        }
+
+        [HttpPost("create-user")]
+        public async Task<IActionResult> CreateUser([FromBody] User user)
+        {
+            var userId = Guid.NewGuid();
+
+            _repository.User.Create(new User
+            {
+                Id = userId,
+                Email = user.Email,
+                Name = user.Name,
+                Password = user.Password
+            });
+            await _repository.SaveAsync();
+
+            return Ok($"User succesfully created. Id: {userId}");
+        }
+
+        private async Task<User?> AuthentificateUser(string email, string password)
+        {
+            var user = await _repository.User.GetUserByEmail(email);
+
+            return user != null && user.Password.Equals(password)
+                ? user
+                : null;
         }
 
         private string GenerateJWT(User user)

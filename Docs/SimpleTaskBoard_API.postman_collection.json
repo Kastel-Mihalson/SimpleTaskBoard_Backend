@@ -1,89 +1,230 @@
 {
 	"info": {
-		"_postman_id": "e979a93c-70b6-4218-8f1a-776399a3bfef",
+		"_postman_id": "b6ca1053-72ae-495b-8151-7891b0e9a105",
 		"name": "SimpleTaskBoard_API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "17652587",
-		"_collection_link": "https://dark-desert-538704.postman.co/workspace/KD_Workspace~1427c162-01c1-4bec-bb9c-676c42dfe0ea/collection/17652587-e979a93c-70b6-4218-8f1a-776399a3bfef?action=share&creator=17652587&source=collection_link"
+		"_exporter_id": "12804597"
 	},
 	"item": [
 		{
-			"name": "Auth.API Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"test@email.ru\",\r\n    \"password\": \"test\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Auth.API",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{AuthDomain}}/api/auth/get-all-users",
+							"protocol": "http",
+							"host": [
+								"{{AuthDomain}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"get-all-users"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:5229/api/auth/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
+				{
+					"name": "GetUserByEmail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{AuthDomain}}/api/auth/get-user-by-email/some@email.ru",
+							"protocol": "http",
+							"host": [
+								"{{AuthDomain}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"get-user-by-email",
+								"some@email.ru"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"alice\",\r\n    \"email\": \"alice@email.ru\",\r\n    \"password\": \"alice\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{AuthDomain}}/api/auth/create-user",
+							"protocol": "http",
+							"host": [
+								"{{AuthDomain}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"create-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"AccessToken\", responseData?.access_token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"port": "5229",
-					"path": [
-						"api",
-						"auth",
-						"login"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"alice@email.ru\",\r\n    \"password\": \"alice\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{AuthDomain}}/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{AuthDomain}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Content.API GetAvailableBooks",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:5291/api/books/getAvailableBooks",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5291",
-					"path": [
-						"api",
-						"books",
-						"getAvailableBooks"
-					]
+			"name": "Content.API",
+			"item": [
+				{
+					"name": "GetAllBooks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AccessToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{ContentDomain}}/api/books/get-all-books",
+							"protocol": "http",
+							"host": [
+								"{{ContentDomain}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"get-all-books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddBook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{AccessToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"2\",\r\n    \"title\": \"some book 2\",\r\n    \"author\": \"some other shit\",\r\n    \"price\": \"148\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{ContentDomain}}/api/books/add-book",
+							"protocol": "http",
+							"host": [
+								"{{ContentDomain}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"add-book"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "Content.API GetOrders",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZW1haWwucnUiLCJzdWIiOiI0ZTBiM2VjZS1hMjQ1LTQwZTMtYTIxOS03OWZiNTRlZGQ1NDEiLCJuYmYiOjE2OTA1NDQ0NDMsImV4cCI6MTY5MDU0ODA0MywiaWF0IjoxNjkwNTQ0NDQzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUyMjkiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUyOTEifQ.18wW-mArOXEhF9yHEPb6Ecfc-NdOHGehZhrgsp6pEvs",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:5291/api/orders/getOrders",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5291",
-					"path": [
-						"api",
-						"orders",
-						"getOrders"
-					]
-				}
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AuthDomain",
+			"value": "localhost:5229",
+			"type": "string"
+		},
+		{
+			"key": "ContentDomain",
+			"value": "localhost:5291",
+			"type": "string"
+		},
+		{
+			"key": "AccessToken",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
