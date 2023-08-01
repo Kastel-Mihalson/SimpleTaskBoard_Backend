@@ -1,5 +1,8 @@
-﻿using Content.API.Models;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SimpleTaskBoard.Domain.Models;
+using SimpleTaskBoard.Infrastructure.Interfaces;
+using System.Security.Claims;
 
 namespace Content.API.Controllers
 {
@@ -7,18 +10,44 @@ namespace Content.API.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly BookStore _bookStore;
+        private IRepositoryWrapper _repository;
 
-        public BooksController(BookStore bookStore)
+        public BooksController(IRepositoryWrapper repository)
         {
-            _bookStore = bookStore;
+            _repository = repository;
         }
 
-        [HttpGet]
-        [Route("getAvailableBooks")]
-        public IActionResult GetAvailableBooks()
+        [Authorize]
+        [HttpGet("get-all-books")]
+        public async Task<IActionResult> GetAllBooks()
         {
-            return Ok(_bookStore.Books);
+            var userId = User.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            var books = await _repository.Book.GetAllBooks();
+
+            return Ok(books);
         }
+
+        [Authorize]
+        [HttpPost("add-book")]
+        public async Task<IActionResult> AddBook([FromBody] Book book)
+        {
+            _repository.Book.Create(new Book
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                Price = book.Price,
+            });
+            await _repository.SaveAsync();
+
+            return Ok("Book created!");
+        }
+
+        
     }
 }

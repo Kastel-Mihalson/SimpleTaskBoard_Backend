@@ -8,6 +8,11 @@ namespace SimpleTaskBoard.Infrastructure.Repositories
     {
         public UserRepository(SimpleTaskBoardDbContext dbContext) : base(dbContext) { }
 
+        public async Task<IReadOnlyList<User>> GetAllUsers()
+        {
+            return await GetAll().OrderBy(u => u.Name).ToListAsync();
+        }
+
         public async Task<User?> GetUserByEmail(string email)
         {
             return await GetByCondition(user => user.Email.Equals(email)).FirstOrDefaultAsync();

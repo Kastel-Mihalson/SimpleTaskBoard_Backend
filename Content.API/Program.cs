@@ -1,7 +1,10 @@
 using Auth.Common;
-using Content.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SimpleTaskBoard.Infrastructure;
+using SimpleTaskBoard.Infrastructure.Interfaces;
+using SimpleTaskBoard.Infrastructure.Repositories;
 
 public class Program
 {
@@ -9,6 +12,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
+        var connectionString = builder.Configuration.GetConnectionString("DBConnection");
 
         builder.Services.AddControllers();
         builder.Services.AddCors(option =>
@@ -20,8 +24,10 @@ public class Program
                     .AllowAnyHeader();
             });
         });
+        builder.Services.AddDbContext<SimpleTaskBoardDbContext>(options
+            => options.UseNpgsql(connectionString));
+        builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
-        builder.Services.AddSingleton(new BookStore());
         builder.Services.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

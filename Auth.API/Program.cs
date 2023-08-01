@@ -1,6 +1,5 @@
 using Auth.Common;
 using Microsoft.EntityFrameworkCore;
-using SimpleTaskBoard.Domain.Models;
 using SimpleTaskBoard.Infrastructure;
 using SimpleTaskBoard.Infrastructure.Interfaces;
 using SimpleTaskBoard.Infrastructure.Repositories;
@@ -13,8 +12,8 @@ public class Program
         var authSection = builder.Configuration.GetSection("Auth");
         var connectionString = builder.Configuration.GetConnectionString("DBConnection");
 
-        builder.Services.AddControllers();
         builder.Services.Configure<AuthOptions>(authSection);
+        builder.Services.AddControllers();
         builder.Services.AddCors(option =>
         {
             option.AddDefaultPolicy(builder =>
@@ -26,8 +25,7 @@ public class Program
         });
         builder.Services.AddDbContext<SimpleTaskBoardDbContext>(options 
             => options.UseNpgsql(connectionString));
-
-        builder.Services.AddTransient<IBaseRepository<User>, UserRepository>();
+        builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
         var app = builder.Build();
 
