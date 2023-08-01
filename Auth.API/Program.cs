@@ -1,8 +1,9 @@
-using Auth.API;
-using Auth.API.Models;
-using Auth.API.Repositories;
 using Auth.Common;
 using Microsoft.EntityFrameworkCore;
+using SimpleTaskBoard.Domain.Models;
+using SimpleTaskBoard.Infrastructure;
+using SimpleTaskBoard.Infrastructure.Interfaces;
+using SimpleTaskBoard.Infrastructure.Repositories;
 
 public class Program
 {
@@ -23,9 +24,10 @@ public class Program
                     .AllowAnyHeader();
             });
         });
-        builder.Services.AddDbContext<AuthContext>(options 
+        builder.Services.AddDbContext<SimpleTaskBoardDbContext>(options 
             => options.UseNpgsql(connectionString));
-        builder.Services.AddTransient<IRepository<User>, UserRepository>();
+
+        builder.Services.AddTransient<IBaseRepository<User>, UserRepository>();
 
         var app = builder.Build();
 

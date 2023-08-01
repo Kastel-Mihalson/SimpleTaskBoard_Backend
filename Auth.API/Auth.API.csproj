@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth.Common\Auth.Common.csproj" />
+    <ProjectReference Include="..\SimpleTaskBoard.Domain\SimpleTaskBoard.Domain.csproj" />
+    <ProjectReference Include="..\SimpleTaskBoard.Infrastructure\SimpleTaskBoard.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.API", "Auth.API\Auth.API.csproj", "{E286B368-9AF5-479C-ABA2-C996052CAA5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.API", "Auth.API\Auth.API.csproj", "{E286B368-9AF5-479C-ABA2-C996052CAA5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Common", "Auth.Common\Auth.Common.csproj", "{1F4DEB81-F184-49E7-9907-6C8C25CBADD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Common", "Auth.Common\Auth.Common.csproj", "{1F4DEB81-F184-49E7-9907-6C8C25CBADD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content.API", "Content.API\Content.API.csproj", "{B19AC25F-1C16-45F6-ADD1-1AEEA2F5FAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Content.API", "Content.API\Content.API.csproj", "{B19AC25F-1C16-45F6-ADD1-1AEEA2F5FAEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleTaskBoard.Domain", "SimpleTaskBoard.Domain\SimpleTaskBoard.Domain.csproj", "{6DBD9598-53B1-4F05-BD21-4EFDEAACF44E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTaskBoard.Infrastructure", "SimpleTaskBoard.Infrastructure\SimpleTaskBoard.Infrastructure.csproj", "{B343907E-C088-4AAF-9047-B0F65E6EA519}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{B19AC25F-1C16-45F6-ADD1-1AEEA2F5FAEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B19AC25F-1C16-45F6-ADD1-1AEEA2F5FAEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B19AC25F-1C16-45F6-ADD1-1AEEA2F5FAEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DBD9598-53B1-4F05-BD21-4EFDEAACF44E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DBD9598-53B1-4F05-BD21-4EFDEAACF44E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DBD9598-53B1-4F05-BD21-4EFDEAACF44E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DBD9598-53B1-4F05-BD21-4EFDEAACF44E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B343907E-C088-4AAF-9047-B0F65E6EA519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B343907E-C088-4AAF-9047-B0F65E6EA519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B343907E-C088-4AAF-9047-B0F65E6EA519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B343907E-C088-4AAF-9047-B0F65E6EA519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
