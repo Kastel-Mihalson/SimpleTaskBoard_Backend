@@ -1,0 +1,60 @@
+version: '3.4'
+
+services:
+    simpletaskboarddb: 
+        image: postgres
+        container_name: postgres
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=SimpleTaskBoard
+        ports:
+            - "5432:5432"
+        volumes:
+            - simpletaskboarddb_data:/var/lib/postgresql/data
+
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgadmin
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=admin@yandex.ru
+            - PGADMIN_DEFAULT_PASSWORD=admin1234
+        restart: always
+        ports:
+            - "5050:80"
+        volumes:
+            - pgadmin_data:/root/.pgadmin
+
+    auth.api:
+        image: ${DOCKER_REGISTRY-}authapi
+        build:
+            context: .
+            dockerfile: Auth.API/Dockerfile
+        container_name: auth.api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - "DatabaseSettings:ConnectionString=Server=simpletaskboarddb;Port=5432;Database=SimpleTaskBoard;User Id=postgres;Password=postgres;"
+        depends_on:
+            - simpletaskboarddb
+        ports:
+            - "8001:80"
+
+    content.api:
+        image: ${DOCKER_REGISTRY-}contentapi
+        build:
+            context: .
+            dockerfile: Content.API/Dockerfile
+        container_name: content.api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - "DatabaseSettings:ConnectionString=Server=simpletaskboarddb;Port=5432;Database=SimpleTaskBoard;User Id=postgres;Password=postgres;"
+        depends_on:
+            - simpletaskboarddb
+        ports:
+            - "8002:80"
+
+volumes:
+    simpletaskboarddb_data:
+    pgadmin_data:
+        
