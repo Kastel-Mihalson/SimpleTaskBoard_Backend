@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Content.API", "Content.API\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleTaskBoard.Domain", "SimpleTaskBoard.Domain\SimpleTaskBoard.Domain.csproj", "{6DBD9598-53B1-4F05-BD21-4EFDEAACF44E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTaskBoard.Infrastructure", "SimpleTaskBoard.Infrastructure\SimpleTaskBoard.Infrastructure.csproj", "{B343907E-C088-4AAF-9047-B0F65E6EA519}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleTaskBoard.Infrastructure", "SimpleTaskBoard.Infrastructure\SimpleTaskBoard.Infrastructure.csproj", "{B343907E-C088-4AAF-9047-B0F65E6EA519}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0EB68A45-77E6-44F8-8612-A4393190ED3B}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

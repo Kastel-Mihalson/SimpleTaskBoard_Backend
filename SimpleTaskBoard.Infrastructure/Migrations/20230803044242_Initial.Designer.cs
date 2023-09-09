@@ -12,7 +12,7 @@ using SimpleTaskBoard.Infrastructure;
 namespace SimpleTaskBoard.Infrastructure.Migrations
 {
     [DbContext(typeof(SimpleTaskBoardDbContext))]
-    [Migration("20230801180107_Initial")]
+    [Migration("20230803044242_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

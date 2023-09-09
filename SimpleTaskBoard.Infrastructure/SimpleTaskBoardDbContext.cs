@@ -5,10 +5,7 @@ namespace SimpleTaskBoard.Infrastructure
 {
     public class SimpleTaskBoardDbContext : DbContext
     {
-        public SimpleTaskBoardDbContext(DbContextOptions<SimpleTaskBoardDbContext> options) : base(options)
-        {
-            Database.EnsureCreated();
-        }
+        public SimpleTaskBoardDbContext(DbContextOptions<SimpleTaskBoardDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Book> Books { get; set; }
