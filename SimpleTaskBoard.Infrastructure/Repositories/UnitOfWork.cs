@@ -2,7 +2,7 @@
 
 namespace SimpleTaskBoard.Infrastructure.Repositories
 {
-    public class RepositoryWrapper : IRepositoryWrapper
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly SimpleTaskBoardDbContext _dbContext;
         private IUserRepository _user;
@@ -34,7 +34,7 @@ namespace SimpleTaskBoard.Infrastructure.Repositories
             }
         }
 
-        public RepositoryWrapper(SimpleTaskBoardDbContext dbContext)
+        public UnitOfWork(SimpleTaskBoardDbContext dbContext)
         {
             _dbContext = dbContext;
         }

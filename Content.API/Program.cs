@@ -26,7 +26,7 @@ public class Program
         });
         builder.Services.AddDbContext<SimpleTaskBoardDbContext>(options
             => options.UseNpgsql(connectionString));
-        builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+        builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         builder.Services.AddAuthentication(x =>
         {

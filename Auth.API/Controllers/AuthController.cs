@@ -15,12 +15,12 @@ namespace Auth.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IOptions<AuthOptions> _authOptions;
-        private readonly IRepositoryWrapper _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AuthController(IOptions<AuthOptions> authOptions, IRepositoryWrapper repository)
+        public AuthController(IOptions<AuthOptions> authOptions, IUnitOfWork unitOfWork)
         {
             _authOptions = authOptions;
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public IReadOnlyList<User> Users => new List<User>
@@ -67,7 +67,7 @@ namespace Auth.API.Controllers
         [HttpGet("get-all-users")]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await _repository.User.GetAllUsers();
+            var users = await _unitOfWork.User.GetAllUsers();
 
             return Ok(users);
         }
@@ -75,7 +75,7 @@ namespace Auth.API.Controllers
         [HttpGet("get-user-by-email/{email}")]
         public async Task<IActionResult> GetUserByEmail(string email)
         {
-            var user = await _repository.User.GetUserByEmail(email);
+            var user = await _unitOfWork.User.GetUserByEmail(email);
 
             if (user == null)
             {
@@ -90,21 +90,21 @@ namespace Auth.API.Controllers
         {
             var userId = Guid.NewGuid();
 
-            _repository.User.Create(new User
+            _unitOfWork.User.Create(new User
             {
                 Id = userId,
                 Email = user.Email,
                 Name = user.Name,
                 Password = user.Password
             });
-            await _repository.SaveAsync();
+            await _unitOfWork.SaveAsync();
 
             return Ok($"User succesfully created. Id: {userId}");
         }
 
         private async Task<User?> AuthentificateUser(string email, string password)
         {
-            var user = await _repository.User.GetUserByEmail(email);
+            var user = await _unitOfWork.User.GetUserByEmail(email);
 
             return user != null && user.Password.Equals(password)
                 ? user
