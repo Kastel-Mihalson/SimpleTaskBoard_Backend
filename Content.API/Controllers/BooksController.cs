@@ -10,9 +10,9 @@ namespace Content.API.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private IRepositoryWrapper _repository;
+        private IUnitOfWork _repository;
 
-        public BooksController(IRepositoryWrapper repository)
+        public BooksController(IUnitOfWork repository)
         {
             _repository = repository;
         }

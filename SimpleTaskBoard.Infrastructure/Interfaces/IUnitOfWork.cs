@@ -1,6 +1,6 @@
 ﻿namespace SimpleTaskBoard.Infrastructure.Interfaces
 {
-    public interface IRepositoryWrapper
+    public interface IUnitOfWork
     {
         IUserRepository User { get; }
 
