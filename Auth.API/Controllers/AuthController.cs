@@ -23,31 +23,6 @@ namespace Auth.API.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IReadOnlyList<User> Users => new List<User>
-        {
-            new User
-            {
-                Id = Guid.Parse("2845A861-8679-469C-B97D-E931E1638BBF"),
-                Name = "user",
-                Email = "user@email.ru",
-                Password = "user"
-            },
-            new User
-            {
-                Id = Guid.Parse("070839D5-4774-44F5-843C-10370F575798"),
-                Name = "admin",
-                Email = "admin@email.ru",
-                Password = "admin"
-            },
-            new User
-            {
-                Id = Guid.Parse("4E0B3ECE-A245-40E3-A219-79FB54EDD541"),
-                Name = "test",
-                Email = "test@email.ru",
-                Password = "test"
-            }
-        };
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Login login)
         {
@@ -62,6 +37,24 @@ namespace Auth.API.Controllers
                 });
             }
             return Unauthorized();
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserData userData)
+        {
+            var user = await AuthentificateUser(userData.Email, userData.Password);
+
+            if (user != null)
+            {
+                return BadRequest($"User with email: {user.Email} already exist");
+            }
+
+            if (user == null)
+            {
+                await CreateUser(userData);
+            }
+
+            return Ok("User succesfully registered.");
         }
 
         [HttpGet("get-all-users")]
@@ -86,7 +79,7 @@ namespace Auth.API.Controllers
         }
 
         [HttpPost("create-user")]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] UserData user)
         {
             var userId = Guid.NewGuid();
 
